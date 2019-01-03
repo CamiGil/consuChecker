@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -44,7 +47,10 @@ public class Settings {
 
 	static {
 		try {
-			settingsFile = new File(getWorkingDirectory() + File.separator + "config" + File.separator + "settings.properties");
+			String path = "home/camilagil/dev/" + getWorkingDirectory() + File.separator +
+					"config" + File.separator + "settings.properties";
+			settingsFile = new File(path);
+			//settingsFile = Files.createFile(Paths.get(path));
 			setupSettings();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -59,6 +65,7 @@ public class Settings {
 	}
 
 	public static void useDefaultSettings() throws IOException {
+
 	  FileUtils.copyInputStreamToFile(Settings.class.getClassLoader().getResourceAsStream("default-settings.properties"), settingsFile);
   }
 

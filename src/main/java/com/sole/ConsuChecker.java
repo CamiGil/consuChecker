@@ -4,6 +4,7 @@
 package com.sole;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -37,8 +38,8 @@ public class ConsuChecker extends Thread {
 	private static final String ORANGE_CELL = "calendarCellMed";
 	private static final String LOGIN = "BtnLogin";
 	
-	static FirefoxDriver driver;
-	static Wait<WebDriver> wait;
+	private static FirefoxDriver driver;
+	private static Wait<WebDriver> wait;
 	private static Logger LOG = Logger.getLogger(ConsuChecker.class);
 
 	private static ConsuChecker app;
@@ -95,20 +96,24 @@ public class ConsuChecker extends Thread {
 							// do nothing.
 							LOG.debug(e);
 						}
-						return Boolean.valueOf(findLink("Prenota il servizio") != null);
+						return findLink("Prenota il servizio") != null;
 					}
 				});
+
 				while (running) {
+
 					if (checkPrimoAppuntamento()) {
 						stopApp();
 						LOG.info("Turnos encontrados! La aplicacion ha sido detenida.");
 					}
+
 					if (UserOptions.isCheckFigliDiretti())
 						if (checkFigliDiretti()) {
 							stopApp();
 							LOG.info("Turnos encontrados! La aplicacion ha sido detenida.");
 						}
-					makeTime();
+
+						makeTime();
 				}
 			} catch (Exception e) {
 				ConsuGui.startStopButton.setEnabled(true);
@@ -130,10 +135,11 @@ public class ConsuChecker extends Thread {
 	}
 
 	private boolean notificationsEnabled() {
-		return UserOptions.getEmails() != null && UserOptions.getEmails().length > 0 && !"".equals(UserOptions.getEmails()[0]);
+		return UserOptions.getEmails().length > 0 && !"".equals(UserOptions.getEmails()[0]);
 	}
 
 	private static boolean checkFigliDiretti() {
+
 		LOG.info("Chequeando Figli Diretti...");
 		ConsuGui.startStopButton.setEnabled(false);
 		click("Prenota On Line");
@@ -183,6 +189,7 @@ public class ConsuChecker extends Thread {
 //	}
  
 	private static boolean checkCalendar(String appointmentType) {
+
 		for (int i = 0; i < 13; i++) {
 			List<WebElement> elements = driver.findElements(By.tagName("td"));
 			for (WebElement e : elements) {
@@ -285,7 +292,7 @@ public class ConsuChecker extends Thread {
 
 	private static void sendMail(String appointmentType) {
 		if (Settings.getBooleanProperty(SettingsProperty.EMAILS_ENABLED))
-			LOG.info("Notificando a " + UserOptions.getEmails() + " por " + appointmentType);
+			LOG.info("Notificando a " + Arrays.toString(UserOptions.getEmails()) + " por " + appointmentType);
 			MailSender.sendEmail(appointmentType, UserOptions.getEmails());
 	}
 
