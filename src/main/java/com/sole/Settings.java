@@ -22,16 +22,24 @@ import org.apache.log4j.Logger;
  * 
  */
 public class Settings {
-	
+
 	private static final Logger LOG = Logger.getLogger(Settings.class);
 
 	public enum SettingsProperty {
-		LOGIN_ANONYMOUSLY("login.anonymously"), TAKE_THE_APPOINTMENT("take.the.appointment"), 
-		CHECK_FIGLI_DIRETTI("check.figli.diretti"), TIME_TO_WAIT("time.to.wait"), 
-		USERNAME("username"), PASSWORD("password"), MOBILE("mobile"), PARENT_NAME("parent.name"), 
-		PARENT_PLACE_OF_BIRTH("parent.place.of.birth"), PARENT_DATE_OF_BIRTH("parent.date.of.birth"),
+		LOGIN_ANONYMOUSLY("login.anonymously"),
+		TAKE_THE_APPOINTMENT("take.the.appointment"),
+		CHECK_FIGLI_DIRETTI("check.figli.diretti"),
+		TIME_TO_WAIT("time.to.wait"),
+		USERNAME("username"),
+		PASSWORD("password"),
+		MOBILE("mobile"),
+		PARENT_NAME("parent.name"),
+		PARENT_PLACE_OF_BIRTH("parent.place.of.birth"),
+		PARENT_DATE_OF_BIRTH("parent.date.of.birth"),
 		PARENT_PLACE_OF_CITIZENSHIP("parent.place.of.citizenship"), 
-		EMAILS("emails"), EMAILS_ENABLED("emails.enabled"), SHOW_WELCOME_MESSAGE("show.welcome.message");
+		EMAILS("emails"), EMAILS_ENABLED("emails.enabled"),
+		SHOW_WELCOME_MESSAGE("show.welcome.message");
+
 		private final String name;
 
 		SettingsProperty(String name) {
@@ -47,7 +55,7 @@ public class Settings {
 
 	static {
 		try {
-			String path = "home/camilagil/dev/" + getWorkingDirectory() + File.separator +
+			String path = "home/camilagil/dev" + getWorkingDirectory() + File.separator +
 					"config" + File.separator + "settings.properties";
 			settingsFile = new File(path);
 			//settingsFile = Files.createFile(Paths.get(path));
@@ -107,6 +115,5 @@ public class Settings {
 	public static String[] getEmails() {
 	  return null;
   }
-	
 
 }
